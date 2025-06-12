@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         '/task_creation': (context) => TaskCreationPage(),
         '/settings': (context) => SettingsPage(),
       },
-      home: TodoPage(home: ''),
+      home: TodoPage(),
 
     );
   }
