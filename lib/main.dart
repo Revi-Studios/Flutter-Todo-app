@@ -14,8 +14,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(colorScheme: ColorScheme.light(primary: Colors.black,)) ,
-      darkTheme: ThemeData(colorScheme: ColorScheme.dark(primary: Colors.white,)),
+      theme: ThemeData(colorScheme: ColorScheme.light(primary: Colors.black,), pageTransitionsTheme: const PageTransitionsTheme(builders: <TargetPlatform, PageTransitionsBuilder>{TargetPlatform.android: PredictiveBackPageTransitionsBuilder()},),),
+      darkTheme: ThemeData(colorScheme: ColorScheme.dark(primary: Colors.white,), pageTransitionsTheme: const PageTransitionsTheme(builders: <TargetPlatform, PageTransitionsBuilder>{TargetPlatform.android: PredictiveBackPageTransitionsBuilder()},),),
+      themeMode: ThemeMode.dark,
       routes: {
         '/task_creation': (context) => TaskCreationPage(),
         '/settings': (context) => SettingsPage(),

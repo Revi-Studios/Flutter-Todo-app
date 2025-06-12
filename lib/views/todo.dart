@@ -34,7 +34,10 @@ class TodoPage extends StatelessWidget {
           ListTile(
             leading: Icon(Symbols.settings),
             title: Text('Settings'),
-            onTap:() => Navigator.pushNamed(context, '/settings'),
+            onTap:() {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/settings');
+            },
           )
         ],
       ),
@@ -44,6 +47,9 @@ class TodoPage extends StatelessWidget {
           onPressed:() => Navigator.pushNamed(context, '/task_creation'),
           child: Icon(Symbols.add),
       ),
+
+      
+
 
       
 

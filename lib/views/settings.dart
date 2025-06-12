@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 class SettingsPage extends StatelessWidget {
-  const SettingsPage({super.key});
+
+  final ThemeData? themeData;
+  
+  const SettingsPage({super.key, this.themeData});
 
   // Variables
   @override
@@ -20,9 +23,9 @@ class SettingsPage extends StatelessWidget {
 
           Divider(),
 
-          // SwitchSettingsPare(title: 'Send Notifications', subTitle: 'Sends or stops the sending of notifications', isToggled: true,),
+          SwitchSettingsPare(title: 'Send Notifications', subTitle: 'Sends or stops the sending of notifications',),
 
-          // Divider(),
+          Divider(),
 
 
 
@@ -35,10 +38,9 @@ class SettingsPage extends StatelessWidget {
 class SwitchSettingsPare extends StatefulWidget {
 
   final String title;
-
   final String? subTitle;
-
   final bool? isToggled;
+  
 
   
 
@@ -51,9 +53,7 @@ class SwitchSettingsPare extends StatefulWidget {
 class _SwitchSettingsPareState extends State<SwitchSettingsPare> {
 
   final String title;
-
   final String? subTitle;
-
   bool? isToggled;
 
   _SwitchSettingsPareState({required this.title, this.subTitle, this.isToggled});
