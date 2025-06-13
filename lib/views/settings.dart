@@ -39,24 +39,16 @@ class SwitchSettingsPare extends StatefulWidget {
 
   final String title;
   final String? subTitle;
-  final bool? isToggled;
+  bool? isToggled;
   
 
-  
-
-  const SwitchSettingsPare({super.key, required this.title, this.subTitle, this.isToggled, });
+  SwitchSettingsPare({super.key, required this.title, this.subTitle, this.isToggled, });
 
   @override
-  State<SwitchSettingsPare> createState() => _SwitchSettingsPareState(title: title, subTitle: subTitle, isToggled: isToggled);
+  State<SwitchSettingsPare> createState() => _SwitchSettingsPareState();
 }
 
 class _SwitchSettingsPareState extends State<SwitchSettingsPare> {
-
-  final String title;
-  final String? subTitle;
-  bool? isToggled;
-
-  _SwitchSettingsPareState({required this.title, this.subTitle, this.isToggled});
 
   ifNotNull({var value, String type = 'String'}) {
     switch (type) {
@@ -84,17 +76,17 @@ class _SwitchSettingsPareState extends State<SwitchSettingsPare> {
 
         thumbIcon: WidgetStateProperty.fromMap(<WidgetStatesConstraint, Icon>{WidgetState.selected: Icon(Symbols.check), WidgetState.any: Icon(Symbols.close)}),
 
-      value: ifNotNull(value: isToggled, type: "bool"), 
+      value: ifNotNull(value: widget.isToggled, type: "bool"), 
 
       onChanged: (bool newValue) {
         setState(() {
-          isToggled = newValue;
+          widget.isToggled = newValue;
         });
       }),
 
-      title: Text(ifNotNull(value: title)),
+      title: Text(ifNotNull(value: widget.title)),
 
-      subtitle: Text(ifNotNull(value: subTitle)),
+      subtitle: Text(ifNotNull(value: widget.subTitle)),
       
 
 
