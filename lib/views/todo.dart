@@ -1,12 +1,21 @@
-import 'dart:convert';
-// import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/methods/saving_to_prefrences.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+
+  final GlobalKey<_TaskListState> _taskListKey = GlobalKey<_TaskListState>();
+
+  void taskListWidgetRebuild() {
+    _taskListKey.currentState?.taskListWidgetRebuild();
+  }
 
 class TodoPage extends StatelessWidget {
   const TodoPage({super.key});
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -45,86 +54,70 @@ class TodoPage extends StatelessWidget {
         child: Icon(Symbols.add),
       ),
 
-      body: TaskList(),
+      body: Column(
+        children: [
+
+          Flexible(child: TaskList(key: _taskListKey,)),
+
+          Padding(padding: const EdgeInsets.only(top: 40), child: TextButton(onPressed: () {clearListDataFromStorage(taskListStorageKey); taskListWidgetRebuild();}, child: Text("Clear all")), ),
+
+        ],
+      ),
     );
   }
 }
 
-
+final String taskListStorageKey = "taskListData";
 
 // Task List Data
 List<dynamic> taskList = [
-  ["Walk with my dogs", DateTime.now().toIso8601String(), false,],
-  // ["Make food", DateTime.friday, false],
-  // ["Play piano", DateTime.now(), false],
-  // ["Meet a friend", DateTime.now() , false],
-  // ["Hello", DateTime.now(), true],
+  // ["Walk with my dogs", DateTime.now().toIso8601String(), false,],
+  // ["Make food", DateTime.now().toIso8601String(), false],
+  // ["Play piano", DateTime.now().toIso8601String(), false],
+  // ["Meet a friend", DateTime.now().toIso8601String() , false],
 ];
-
-
-// Method for saving the Task data
-Future<void> saveListToStorage(String key, List<dynamic> list) async {
-  final prefs = await SharedPreferences.getInstance();
-  String taskToJson = json.encode(list);
-
-  await prefs.setString(key, taskToJson);
-}
-
-
-// Methoed for getting/loading/retrieving Task data
-Future<List<dynamic>> loadListFromStorage(String key) async {
-  final prefs = await SharedPreferences.getInstance();
-
-  final String? taskIsJson = prefs.getString(key);
-
-  if (taskIsJson == null) {
-    return <List<dynamic>>[
-      ["Test", true],
-    ];
-  }
-
-  List<dynamic> taskFromJsonToList = jsonDecode(taskIsJson);
-
-  return taskFromJsonToList;
-}
-
-
-
-Future<List<dynamic>> taskReturner() async {
-  await saveListToStorage("taskListData", taskList);
-  List<dynamic> loadedList = await loadListFromStorage("taskListData");
-  await Future.delayed(const Duration(milliseconds: 500));
-  loadedList.add(["Testing the List.add", DateTime.now().toIso8601String(), true]);
-  return loadedList;
-}
 
 
 
 //Task List Widget
-
-Future<Widget> createTaskListItem() async {
-  List taskListFromStorage = await taskReturner();
-
-   return ListView.builder(
-          itemCount: taskListFromStorage.length,
-          itemBuilder: (context, index) {
-            return TaskTile(
-              title: taskListFromStorage[index][0],
-              date:  DateTime.parse(taskListFromStorage[index][1]),
-              checked: taskListFromStorage[index][2],
-            );
-          },
-        );
+Future<Widget> createTaskListAndItems() async {
+  List<dynamic> taskListFromStorage = await loadListFromStorage(taskListStorageKey);
+  return ListView.builder(
+    shrinkWrap: true,
+    itemCount: taskListFromStorage.length,
+    itemBuilder: (context, index) {
+      return TaskTile(
+        title: taskListFromStorage[index][0],
+        date:  DateTime.parse(taskListFromStorage[index][1]),
+        checked: taskListFromStorage[index][2],
+      );
+    },
+  );
 }
 
+class TaskList extends StatefulWidget {
+  const TaskList({super.key, this.onRebuildRequest});
 
-class TaskList extends StatelessWidget {
-  const TaskList({super.key});
+  final VoidCallback? onRebuildRequest;
+
+  @override
+  State<TaskList> createState() => _TaskListState();
+}
+
+class _TaskListState extends State<TaskList> {
+
+  Future<Widget> taskListAndItemsFuture = createTaskListAndItems();
+
+  void taskListWidgetRebuild() {
+    setState(() {
+      taskListAndItemsFuture = createTaskListAndItems();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: createTaskListItem(),
+      future: taskListAndItemsFuture,
       initialData: TaskTile(title: "initTile", date: DateTime.now(), checked: true),
 
       builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
@@ -142,8 +135,8 @@ class TaskList extends StatelessWidget {
   }
 }
 
-// Task Tile
 
+// Task Tile
 class TaskTile extends StatefulWidget {
   final String title;
 
