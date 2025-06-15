@@ -13,10 +13,6 @@ import 'package:material_symbols_icons/symbols.dart';
 class TodoPage extends StatelessWidget {
   const TodoPage({super.key});
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +84,7 @@ Future<Widget> createTaskListAndItems() async {
     itemBuilder: (context, index) {
       return TaskTile(
         title: taskListFromStorage[index][0],
-        date:  DateTime.parse(taskListFromStorage[index][1]),
+        description: taskListFromStorage[index][1],
         checked: taskListFromStorage[index][2],
       );
     },
@@ -118,7 +114,7 @@ class _TaskListState extends State<TaskList> {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: taskListAndItemsFuture,
-      initialData: TaskTile(title: "initTile", date: DateTime.now(), checked: true),
+      initialData: TaskTile(title: "initTile", description: "in", checked: true),
 
       builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -140,14 +136,14 @@ class _TaskListState extends State<TaskList> {
 class TaskTile extends StatefulWidget {
   final String title;
 
-  DateTime date;
+  final String description;
 
   bool checked;
 
   TaskTile({
     super.key,
     required this.title,
-    required this.date,
+    required this.description,
     required this.checked,
   });
 
@@ -177,7 +173,11 @@ class _TaskTileState extends State<TaskTile> {
         ),
       ),
 
-      subtitle: Text(widget.date.toString()),
+      subtitle: Text(widget.description, style: TextStyle(
+          decoration: widget.checked
+              ? TextDecoration.lineThrough
+              : TextDecoration.none,
+        ),),
     );
   }
 }
