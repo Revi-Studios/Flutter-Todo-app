@@ -26,7 +26,7 @@ class TaskCreationPage extends StatelessWidget {
 
   void addTask(String title, String description) async {
     taskList = await loadListFromStorage(taskListStorageKey);
-    taskList.add([title, description, false]);
+    taskList.add({'title': title, 'description': description, 'checked': false});
     await saveListToStorage(taskListStorageKey, taskList);
     taskListWidgetRebuild();
   }
@@ -61,7 +61,7 @@ class TaskCreationPage extends StatelessWidget {
             }, 
           )
 
-          
+
         ],
       ),
       

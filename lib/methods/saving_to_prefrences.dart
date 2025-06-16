@@ -17,12 +17,12 @@ Future<List<dynamic>> loadListFromStorage(String key) async {
   final String? taskIsJson = prefs.getString(key);
 
   if (taskIsJson == null) {
-    return <List<dynamic>>[
-      ["Error", DateTime.now(), false],
+    return [
+      {'title': 'Error: Null', 'description': 'The Storage $key returned null', 'checked': false},
     ];
   }
 
-  List<dynamic> taskFromJsonToList = jsonDecode(taskIsJson);
+  List<dynamic> taskFromJsonToList = json.decode(taskIsJson);
 
   return taskFromJsonToList;
 }

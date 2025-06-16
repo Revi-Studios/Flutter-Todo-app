@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/methods/saving_to_prefrences.dart';
+import 'package:flutter_todo_app/methods/task_saving.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 
@@ -67,25 +68,22 @@ final String taskListStorageKey = "taskListData";
 
 // Task List Data
 List<dynamic> taskList = [
-  // ["Walk with my dogs", DateTime.now().toIso8601String(), false,],
-  // ["Make food", DateTime.now().toIso8601String(), false],
-  // ["Play piano", DateTime.now().toIso8601String(), false],
-  // ["Meet a friend", DateTime.now().toIso8601String() , false],
+  {'title': 'Test Task', 'description': 'This is a test Task ', 'checked': false},
 ];
-
-
 
 //Task List Widget
 Future<Widget> createTaskListAndItems() async {
-  List<dynamic> taskListFromStorage = await loadListFromStorage(taskListStorageKey);
+  taskList = await loadListFromStorage(taskListStorageKey);
   return ListView.builder(
     shrinkWrap: true,
-    itemCount: taskListFromStorage.length,
-    itemBuilder: (context, index) {
+    itemCount: taskList.length,
+    itemBuilder: (context, index) {      
+
       return TaskTile(
-        title: taskListFromStorage[index][0],
-        description: taskListFromStorage[index][1],
-        checked: taskListFromStorage[index][2],
+        title: taskList[index]['title'],
+        description: taskList[index]['description'],
+        checked: taskList[index]['checked'],
+        index: index,
       );
     },
   );
@@ -114,7 +112,7 @@ class _TaskListState extends State<TaskList> {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: taskListAndItemsFuture,
-      initialData: TaskTile(title: "initTile", description: "in", checked: true),
+      initialData: TaskTile(title: "initTile", description: "in", checked: true, index: 0,),
 
       builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -140,11 +138,14 @@ class TaskTile extends StatefulWidget {
 
   bool checked;
 
+  final int index;
+
   TaskTile({
     super.key,
     required this.title,
     required this.description,
     required this.checked,
+    required this.index,
   });
 
   @override
@@ -160,6 +161,8 @@ class _TaskTileState extends State<TaskTile> {
         onChanged: (value) {
           setState(() {
             widget.checked = !widget.checked;
+            switchCheckedState(widget.index, widget.checked);
+            
           });
         },
       ),
