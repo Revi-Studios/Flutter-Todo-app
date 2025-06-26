@@ -1,18 +1,24 @@
+// import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/methods/saving_to_prefrences.dart';
-import 'package:flutter_todo_app/methods/task_saving.dart';
+import 'package:flutter_todo_app/methods/task_related.dart';
+import 'package:flutter_todo_app/widgets/task_title.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-
-  final GlobalKey<_TaskListState> _taskListKey = GlobalKey<_TaskListState>();
-
-  void taskListWidgetRebuild() {
-    _taskListKey.currentState?.taskListWidgetRebuild();
-  }
-
-class TodoPage extends StatelessWidget {
+class TodoPage extends StatefulWidget {
   const TodoPage({super.key});
+
+  @override
+  State<TodoPage> createState() => TodoPageState();
+}
+
+class TodoPageState extends State<TodoPage> {
+  void updateTaskList() {
+    setState(() {
+      taskListAndItems = createTaskListAndItems();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +59,62 @@ class TodoPage extends StatelessWidget {
 
       body: Column(
         children: [
+          Flexible(
+            child: FutureBuilder(
+              future: taskListAndItems,
+              initialData: TaskTile(
+                title: "initTile",
+                description: "in",
+                checked: true,
+                index: 0,
+              ),
 
-          Flexible(child: TaskList(key: _taskListKey,)),
+              builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasData) {
+                  return snapshot.data!;
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text(
+                      "Error loading the list, Error: ${snapshot.error.toString()}, date: ${DateTime.now().toString()}",
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  );
+                } else {
+                  return Text("Something unexpected happened");
+                }
+              },
+            ),
+          ),
 
-          Padding(padding: const EdgeInsets.only(top: 40), child: TextButton(onPressed: () {clearListDataFromStorage(taskListStorageKey); taskListWidgetRebuild();}, child: Text("Clear all")), ),
+          Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child: Column(
+              children: [
+                TextButton(
+                  onPressed: () {
+                    clearListDataFromStorage(taskListStorageKey);
+                    updateTaskList();
+                  },
+                  child: Text("Clear all"),
+                ),
 
+                IconButton(
+                  onPressed: () => updateTaskList(),
+                  icon: Icon(Symbols.refresh),
+                ),
+
+                IconButton(
+                  onPressed: () {
+                    addTask("nice task", "this is a nice task :)");
+                    updateTaskList();
+                  },
+                  icon: Icon(Symbols.list),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -68,7 +125,16 @@ final String taskListStorageKey = "taskListData";
 
 // Task List Data
 List<dynamic> taskList = [
-  {'title': 'Test Task', 'description': 'This is a test Task ', 'checked': false},
+  {
+    'title': 'Test Task',
+    'description': 'This is a test Task ',
+    'checked': false,
+  },
+  {
+    'title': 'nice task',
+    'description': 'this is a nice task :)',
+    'checked': true,
+  },
 ];
 
 //Task List Widget
@@ -77,8 +143,7 @@ Future<Widget> createTaskListAndItems() async {
   return ListView.builder(
     shrinkWrap: true,
     itemCount: taskList.length,
-    itemBuilder: (context, index) {      
-
+    itemBuilder: (context, index) {
       return TaskTile(
         title: taskList[index]['title'],
         description: taskList[index]['description'],
@@ -89,98 +154,4 @@ Future<Widget> createTaskListAndItems() async {
   );
 }
 
-class TaskList extends StatefulWidget {
-  const TaskList({super.key, this.onRebuildRequest});
-
-  final VoidCallback? onRebuildRequest;
-
-  @override
-  State<TaskList> createState() => _TaskListState();
-}
-
-class _TaskListState extends State<TaskList> {
-
-  Future<Widget> taskListAndItemsFuture = createTaskListAndItems();
-
-  void taskListWidgetRebuild() {
-    setState(() {
-      taskListAndItemsFuture = createTaskListAndItems();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: taskListAndItemsFuture,
-      initialData: TaskTile(title: "initTile", description: "in", checked: true, index: 0,),
-
-      builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasData) {
-          return snapshot.data!;
-        } else if (snapshot.hasError) {
-          return Center(child: Text("Error loading the list, Error: ${snapshot.error.toString()}, date: ${DateTime.now().toString()}", style: TextStyle(color: Colors.red,)));
-        } else {
-          return Text("Something unexpected happened");
-        }
-      }
-    );
-  }
-}
-
-
-// Task Tile
-class TaskTile extends StatefulWidget {
-  final String title;
-
-  final String description;
-
-  bool checked;
-
-  final int index;
-
-  TaskTile({
-    super.key,
-    required this.title,
-    required this.description,
-    required this.checked,
-    required this.index,
-  });
-
-  @override
-  State<TaskTile> createState() => _TaskTileState();
-}
-
-class _TaskTileState extends State<TaskTile> {
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Checkbox(
-        value: widget.checked,
-        onChanged: (value) {
-          setState(() {
-            widget.checked = !widget.checked;
-            switchCheckedState(widget.index, widget.checked);
-            
-          });
-        },
-      ),
-
-      title: Text(
-        widget.title,
-        style: TextStyle(
-          decoration: widget.checked
-              ? TextDecoration.lineThrough
-              : TextDecoration.none,
-        ),
-      ),
-
-      subtitle: Text(widget.description, style: TextStyle(
-          decoration: widget.checked
-              ? TextDecoration.lineThrough
-              : TextDecoration.none,
-        ),),
-    );
-  }
-}
+Future<Widget> taskListAndItems = createTaskListAndItems();
