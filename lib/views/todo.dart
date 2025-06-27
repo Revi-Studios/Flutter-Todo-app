@@ -114,7 +114,7 @@ class TodoPageState extends State<TodoPage> {
         
             Padding(
               padding: const EdgeInsets.only(top: 40),
-              child: Column(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(

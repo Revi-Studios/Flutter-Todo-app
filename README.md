@@ -1,11 +1,14 @@
 # Flutter-Todo-app
-This is a project is built for the porpus of learning flutter. It is an an android todo app with task 
+This is a project built for the porpus of learning flutter. It is an an android todo app with tasks. With learning flutter I am also learnung the Dart programming langauge.
 
 
+![](/assets/images/task_man.svg)
 
 
+## Features Roadmap
 
-## Feature Roadmap
+### Currently working on:
+- [Single Task Deletion](#singe-task-deletion)
 
 #### Most important:
 - Button for deleting single tasks
@@ -17,3 +20,9 @@ This is a project is built for the porpus of learning flutter. It is an an andro
     - A list of all the task you have created.
     - A list of all the task you have deleted.
     - A list of all the changes you have made to tasks [checks, unckecks].
+
+## Feature descriptions:
+
+- #### Singe task deletion:
+
+A button on every task tile for deleting single tasks, not all the task at once (with the clear all button).
