@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/views/creation.dart';
 import 'package:flutter_todo_app/views/settings.dart';
 import 'package:flutter_todo_app/views/todo.dart';
 
@@ -14,15 +13,34 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(colorScheme: ColorScheme.light(primary: Colors.black,), pageTransitionsTheme: const PageTransitionsTheme(builders: <TargetPlatform, PageTransitionsBuilder>{TargetPlatform.android: PredictiveBackPageTransitionsBuilder()},),),
-      darkTheme: ThemeData(colorScheme: ColorScheme.dark(primary: Colors.white,), pageTransitionsTheme: const PageTransitionsTheme(builders: <TargetPlatform, PageTransitionsBuilder>{TargetPlatform.android: PredictiveBackPageTransitionsBuilder()},),),
+      theme: ThemeData(
+        colorScheme: ColorScheme.light(
+          primary: Colors.black,
+          secondary: Colors.white70,
+        ),
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+          },
+        ),
+      ),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.dark(
+          primary: Colors.white,
+          secondary: Colors.black,
+          tertiary: const Color.fromARGB(156, 44, 44, 44),
+        ),
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+          },
+        ),
+      ),
       themeMode: ThemeMode.system,
       routes: {
-        '/task_creation': (context) => TaskCreationPage(),
         '/settings': (context) => SettingsPage(),
       },
       home: TodoPage(),
-
     );
   }
 }

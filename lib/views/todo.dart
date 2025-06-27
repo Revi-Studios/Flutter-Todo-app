@@ -20,6 +20,10 @@ class TodoPageState extends State<TodoPage> {
     });
   }
 
+  final _titleController = TextEditingController();
+  final _titleFocusNode = FocusNode();
+  final _descriptionController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,69 +57,91 @@ class TodoPageState extends State<TodoPage> {
       drawerEdgeDragWidth: 100,
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pushNamed(context, '/task_creation'),
+        onPressed: () => showModalBottomSheet(
+          showDragHandle: true,
+          // isScrollControlled: true,
+          useSafeArea: false,
+          context: context,
+          builder: (context) => Scaffold(
+            body: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                children: [
+                  Text("Create new task"),
+                  TextField(decoration: InputDecoration(border: OutlineInputBorder(),labelText: 'Title' ), controller: _titleController, focusNode: _titleFocusNode,),
+                  TextField(decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Description'), controller: _descriptionController,),
+                  FilledButton(onPressed: () {addTask(_titleController.text, _descriptionController.text); Navigator.pop(context);}, child: Text("Create Task"))
+                ],
+              ),
+            ),
+          ),
+        ),
         child: Icon(Symbols.add),
       ),
 
-      body: Column(
-        children: [
-          Flexible(
-            child: FutureBuilder(
-              future: taskListAndItems,
-              initialData: TaskTile(
-                title: "initTile",
-                description: "in",
-                checked: true,
-                index: 0,
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          children: [
+            Flexible(
+              child: FutureBuilder(
+                future: taskListAndItems,
+                initialData: TaskTile(
+                  title: "initTile",
+                  description: "in",
+                  checked: true,
+                  index: 0,
+                ),
+        
+                builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasData) {
+                    return snapshot.data!;
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text(
+                        "Error loading the list, Error: ${snapshot.error.toString()}, date: ${DateTime.now().toString()}",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    );
+                  } else {
+                    return Text("Something unexpected happened");
+                  }
+                },
               ),
-
-              builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasData) {
-                  return snapshot.data!;
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text(
-                      "Error loading the list, Error: ${snapshot.error.toString()}, date: ${DateTime.now().toString()}",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  );
-                } else {
-                  return Text("Something unexpected happened");
-                }
-              },
             ),
-          ),
-
-          Padding(
-            padding: const EdgeInsets.only(top: 40),
-            child: Column(
-              children: [
-                TextButton(
-                  onPressed: () {
-                    clearListDataFromStorage(taskListStorageKey);
-                    updateTaskList();
-                  },
-                  child: Text("Clear all"),
-                ),
-
-                IconButton(
-                  onPressed: () => updateTaskList(),
-                  icon: Icon(Symbols.refresh),
-                ),
-
-                IconButton(
-                  onPressed: () {
-                    addTask("nice task", "this is a nice task :)");
-                    updateTaskList();
-                  },
-                  icon: Icon(Symbols.list),
-                ),
-              ],
+        
+            Padding(
+              padding: const EdgeInsets.only(top: 40),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      clearListDataFromStorage(taskListStorageKey);
+                      updateTaskList();
+                    },
+                    child: Text("Clear all"),
+                  ),
+        
+                  IconButton(
+                    onPressed: () => updateTaskList(),
+                    icon: Icon(Symbols.refresh),
+                  ),
+        
+                  IconButton(
+                    onPressed: () {
+                      addTask("nice task", "this is a nice task :)");
+                      updateTaskList();
+                    },
+                    icon: Icon(Symbols.list),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
