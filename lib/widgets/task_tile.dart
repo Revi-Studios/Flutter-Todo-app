@@ -26,25 +26,24 @@ class TaskTile extends StatefulWidget {
 class _TaskTileState extends State<TaskTile> {
   @override
   Widget build(BuildContext context) {
-
     final colorSheme = Theme.of(context).colorScheme;
-    
+
     return Card(
-
-      color: colorSheme.onSecondaryContainer,
-
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide()),
+      color: colorSheme.secondary,
       
+
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(),
+      ),
 
       child: ListTile(
-      
         leading: Checkbox(
           value: widget.checked,
           onChanged: (value) {
             setState(() {
               widget.checked = !widget.checked;
               switchCheckedState(widget.index, widget.checked);
-              
             });
           },
         ),
@@ -58,11 +57,14 @@ class _TaskTileState extends State<TaskTile> {
           ),
         ),
       
-        subtitle: Text(widget.description, style: TextStyle(
+        subtitle: Text(
+          widget.description,
+          style: TextStyle(
             decoration: widget.checked
                 ? TextDecoration.lineThrough
                 : TextDecoration.none,
-          ),),
+          ),
+        ),
       ),
     );
   }

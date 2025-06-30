@@ -3,7 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/methods/saving_to_prefrences.dart';
 import 'package:flutter_todo_app/methods/task_related.dart';
-import 'package:flutter_todo_app/widgets/task_title.dart';
+import 'package:flutter_todo_app/widgets/task_future_builder.dart';
+import 'package:flutter_todo_app/widgets/task_tile.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 class TodoPage extends StatefulWidget {
@@ -16,16 +17,20 @@ class TodoPage extends StatefulWidget {
 class TodoPageState extends State<TodoPage> {
   void updateTaskList() {
     setState(() {
-      taskListAndItems = createTaskListAndItems();
+      taskListAndItems = createTaskList();
     });
   }
 
   final _titleController = TextEditingController();
   final _titleFocusNode = FocusNode();
   final _descriptionController = TextEditingController();
+  final _descriptionFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
+
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Todo"),
@@ -57,25 +62,91 @@ class TodoPageState extends State<TodoPage> {
       drawerEdgeDragWidth: 100,
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () => showModalBottomSheet(
-          showDragHandle: true,
-          // isScrollControlled: true,
-          useSafeArea: false,
-          context: context,
-          builder: (context) => Scaffold(
-            body: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                children: [
-                  Text("Create new task"),
-                  TextField(decoration: InputDecoration(border: OutlineInputBorder(),labelText: 'Title' ), controller: _titleController, focusNode: _titleFocusNode,),
-                  TextField(decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Description'), controller: _descriptionController,),
-                  FilledButton(onPressed: () {addTask(_titleController.text, _descriptionController.text); Navigator.pop(context);}, child: Text("Create Task"))
-                ],
-              ),
-            ),
-          ),
-        ),
+        onPressed: () {
+          showModalBottomSheet(
+            showDragHandle: true,
+            isScrollControlled: true,
+            // useSafeArea: false,
+
+            context: context,
+            builder: (context) {
+              return Scaffold(
+                body: Padding(
+                  padding: const EdgeInsets.all(30.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 10,
+                    children: [
+                      Text(
+                        "Create Task",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+
+                      TextField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Title',
+                        ),
+                        controller: _titleController,
+                        focusNode: _titleFocusNode,
+                        autofocus: true,
+                        onSubmitted: (value) => _descriptionFocusNode.requestFocus(),
+                      ),
+
+                      TextField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Description',
+                        ),
+                        controller: _descriptionController,
+                        focusNode: _descriptionFocusNode,
+                      ),
+
+                      Row(
+                        spacing: 10,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: OutlinedButton(
+                              onPressed: () {
+                              _titleController.text = "";
+                              _descriptionController.text = "";
+                            }, child: Text("Clear"))
+                            
+                          ),
+                          
+                          Expanded(
+                            flex: 3,
+                            child: FilledButton(
+                              onPressed: () {
+                                if (_titleController.text != "") {
+                                  addTask(
+                                    _titleController.text,
+                                    _descriptionController.text,
+                                  );
+                                  Navigator.pop(context);
+                                } else {
+                                  _titleFocusNode.requestFocus();
+                                }
+                              },
+                              child: Text("Create Task"),
+                            ),
+                          ),
+
+
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
         child: Icon(Symbols.add),
       ),
 
@@ -83,35 +154,8 @@ class TodoPageState extends State<TodoPage> {
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-            Flexible(
-              child: FutureBuilder(
-                future: taskListAndItems,
-                initialData: TaskTile(
-                  title: "initTile",
-                  description: "in",
-                  checked: true,
-                  index: 0,
-                ),
-        
-                builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasData) {
-                    return snapshot.data!;
-                  } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text(
-                        "Error loading the list, Error: ${snapshot.error.toString()}, date: ${DateTime.now().toString()}",
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    );
-                  } else {
-                    return Text("Something unexpected happened");
-                  }
-                },
-              ),
-            ),
-        
+            Flexible(child: TaskFutureBuilder(taskList: taskListAndItems)),
+
             Padding(
               padding: const EdgeInsets.only(top: 40),
               child: Row(
@@ -120,16 +164,15 @@ class TodoPageState extends State<TodoPage> {
                   TextButton(
                     onPressed: () {
                       clearListDataFromStorage(taskListStorageKey);
-                      updateTaskList();
                     },
                     child: Text("Clear all"),
                   ),
-        
+
                   IconButton(
                     onPressed: () => updateTaskList(),
                     icon: Icon(Symbols.refresh),
                   ),
-        
+
                   IconButton(
                     onPressed: () {
                       addTask("nice task", "this is a nice task :)");
@@ -164,7 +207,7 @@ List<dynamic> taskList = [
 ];
 
 //Task List Widget
-Future<Widget> createTaskListAndItems() async {
+Future<Widget> createTaskList() async {
   taskList = await loadListFromStorage(taskListStorageKey);
   return ListView.builder(
     shrinkWrap: true,
@@ -180,4 +223,4 @@ Future<Widget> createTaskListAndItems() async {
   );
 }
 
-Future<Widget> taskListAndItems = createTaskListAndItems();
+Future<Widget> taskListAndItems = createTaskList();

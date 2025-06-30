@@ -7,6 +7,7 @@ This is a project built for the porpus of learning flutter. It is an an android 
 
 ## Features Roadmap
 
+
 ### Currently working on:
 - [Single Task Deletion](#singe-task-deletion)
 
@@ -20,6 +21,12 @@ This is a project built for the porpus of learning flutter. It is an an android 
     - A list of all the task you have created.
     - A list of all the task you have deleted.
     - A list of all the changes you have made to tasks [checks, unckecks].
+
+### Known bugs/issus:
+- [ ] You can't delete single tasks
+- [ ] The task list doesn't update correctly when adding new tasks.
+
+[doc [bugs and issus]](/docs/bugs.md)
 
 ## Feature descriptions:
 
