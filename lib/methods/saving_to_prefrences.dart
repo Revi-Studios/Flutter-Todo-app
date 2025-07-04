@@ -17,9 +17,7 @@ Future<List<dynamic>> loadListFromStorage(String key) async {
   final String? taskIsJson = prefs.getString(key);
 
   if (taskIsJson == null) {
-    return [
-      {'title': 'Error: Null', 'description': 'The Storage $key returned null', 'checked': false},
-    ];
+    return [];
   }
 
   List<dynamic> taskFromJsonToList = json.decode(taskIsJson);
