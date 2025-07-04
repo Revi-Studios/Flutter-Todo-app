@@ -4,14 +4,11 @@ import 'package:flutter_todo_app/methods/task_related.dart';
 // Task Tile
 class TaskTile extends StatefulWidget {
   final String title;
-
   final String description;
-
-  bool checked;
-
+  final bool checked;
   final int index;
 
-  TaskTile({
+  const TaskTile({
     super.key,
     required this.title,
     required this.description,
@@ -24,13 +21,21 @@ class TaskTile extends StatefulWidget {
 }
 
 class _TaskTileState extends State<TaskTile> {
+  
+  late bool checked;
+
+  @override
+  void initState() {
+    super.initState();
+    checked = widget.checked;
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorSheme = Theme.of(context).colorScheme;
 
     return Card(
       color: colorSheme.secondary,
-      
 
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
@@ -39,28 +44,28 @@ class _TaskTileState extends State<TaskTile> {
 
       child: ListTile(
         leading: Checkbox(
-          value: widget.checked,
+          value: checked,
           onChanged: (value) {
             setState(() {
-              widget.checked = !widget.checked;
-              switchCheckedState(widget.index, widget.checked);
+              checked = !checked;
+              switchCheckedState(widget.index, checked);
             });
           },
         ),
-      
+
         title: Text(
           widget.title,
           style: TextStyle(
-            decoration: widget.checked
+            decoration: checked
                 ? TextDecoration.lineThrough
                 : TextDecoration.none,
           ),
         ),
-      
+
         subtitle: Text(
           widget.description,
           style: TextStyle(
-            decoration: widget.checked
+            decoration: checked
                 ? TextDecoration.lineThrough
                 : TextDecoration.none,
           ),
