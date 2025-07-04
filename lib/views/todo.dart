@@ -170,7 +170,7 @@ class TodoPageState extends State<TodoPage> {
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 10),
-              child: TaskFilteringChips(controller: _taskFilteringChipsController, onChange: () => updateTaskList(),),
+              child: TaskFilteringChips(controller: _taskFilteringChipsController, onChanged: () => updateTaskList(),),
             ),
 
             Flexible(child: TaskFutureBuilder(taskList: taskListAndItems)),
