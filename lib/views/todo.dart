@@ -191,13 +191,6 @@ class TodoPageState extends State<TodoPage> {
                     onPressed: () => updateTaskList(),
                     icon: Icon(Symbols.refresh),
                   ),
-
-                  IconButton(
-                    onPressed: () {
-                      createTaskInTaskList("nice task", "this is a nice task :)");
-                    },
-                    icon: Icon(Symbols.list),
-                  ),
                 ],
               ),
             ),
