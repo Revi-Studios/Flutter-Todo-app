@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/methods/task_related.dart';
 import 'package:flutter_todo_app/views/settings.dart';
 import 'package:flutter_todo_app/views/todo.dart';
 
 void main() {
   runApp(const MyApp());
+  setTaskListFromStorage();
 }
 
 class MyApp extends StatelessWidget {

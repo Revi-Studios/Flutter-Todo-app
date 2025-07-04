@@ -1,8 +1,12 @@
 // import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_todo_app/consts/task_list.dart';
+import 'package:flutter_todo_app/consts/task_storage_key.dart';
 import 'package:flutter_todo_app/methods/saving_to_prefrences.dart';
 import 'package:flutter_todo_app/methods/task_related.dart';
+import 'package:flutter_todo_app/widgets/task_filter_chip.dart';
 import 'package:flutter_todo_app/widgets/task_future_builder.dart';
 import 'package:flutter_todo_app/widgets/task_tile.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -15,9 +19,10 @@ class TodoPage extends StatefulWidget {
 }
 
 class TodoPageState extends State<TodoPage> {
+
   void updateTaskList() {
     setState(() {
-      taskListAndItems = createTaskList();
+      taskListAndItems = createTaskList(_taskFilteringChipsController.text);
     });
   }
 
@@ -26,10 +31,10 @@ class TodoPageState extends State<TodoPage> {
   final _descriptionController = TextEditingController();
   final _descriptionFocusNode = FocusNode();
 
+  final _taskFilteringChipsController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-
-    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
@@ -66,8 +71,8 @@ class TodoPageState extends State<TodoPage> {
           showModalBottomSheet(
             showDragHandle: true,
             isScrollControlled: true,
-            // useSafeArea: false,
 
+            // useSafeArea: false,
             context: context,
             builder: (context) {
               return Scaffold(
@@ -94,7 +99,8 @@ class TodoPageState extends State<TodoPage> {
                         controller: _titleController,
                         focusNode: _titleFocusNode,
                         autofocus: true,
-                        onSubmitted: (value) => _descriptionFocusNode.requestFocus(),
+                        onSubmitted: (value) =>
+                            _descriptionFocusNode.requestFocus(),
                       ),
 
                       TextField(
@@ -113,22 +119,24 @@ class TodoPageState extends State<TodoPage> {
                             flex: 1,
                             child: OutlinedButton(
                               onPressed: () {
-                              _titleController.text = "";
-                              _descriptionController.text = "";
-                            }, child: Text("Clear"))
-                            
+                                _titleController.text = "";
+                                _descriptionController.text = "";
+                              },
+                              child: Text("Clear"),
+                            ),
                           ),
-                          
+
                           Expanded(
                             flex: 3,
                             child: FilledButton(
                               onPressed: () {
                                 if (_titleController.text != "") {
-                                  addTask(
+                                  createTaskInTaskList(
                                     _titleController.text,
                                     _descriptionController.text,
                                   );
                                   Navigator.pop(context);
+                                  saveTaskListToStorage();
                                 } else {
                                   _titleFocusNode.requestFocus();
                                 }
@@ -136,8 +144,6 @@ class TodoPageState extends State<TodoPage> {
                               child: Text("Create Task"),
                             ),
                           ),
-
-
                         ],
                       ),
                     ],
@@ -154,6 +160,11 @@ class TodoPageState extends State<TodoPage> {
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: TaskFilteringChips(controller: _taskFilteringChipsController, onChange: () => updateTaskList(),),
+            ),
+
             Flexible(child: TaskFutureBuilder(taskList: taskListAndItems)),
 
             Padding(
@@ -175,8 +186,7 @@ class TodoPageState extends State<TodoPage> {
 
                   IconButton(
                     onPressed: () {
-                      addTask("nice task", "this is a nice task :)");
-                      updateTaskList();
+                      createTaskInTaskList("nice task", "this is a nice task :)");
                     },
                     icon: Icon(Symbols.list),
                   ),
@@ -190,37 +200,38 @@ class TodoPageState extends State<TodoPage> {
   }
 }
 
-final String taskListStorageKey = "taskListData";
-
-// Task List Data
-List<dynamic> taskList = [
-  {
-    'title': 'Test Task',
-    'description': 'This is a test Task ',
-    'checked': false,
-  },
-  {
-    'title': 'nice task',
-    'description': 'this is a nice task :)',
-    'checked': true,
-  },
-];
-
 //Task List Widget
-Future<Widget> createTaskList() async {
-  taskList = await loadListFromStorage(taskListStorageKey);
-  return ListView.builder(
-    shrinkWrap: true,
-    itemCount: taskList.length,
-    itemBuilder: (context, index) {
-      return TaskTile(
-        title: taskList[index]['title'],
-        description: taskList[index]['description'],
-        checked: taskList[index]['checked'],
-        index: index,
-      );
-    },
-  );
+Future<Widget> createTaskList(String option) async {
+  switch (option) {
+    case "All":
+      return ListView.builder(
+        itemCount: taskList.length,
+        itemBuilder: (context, index) {
+          return TaskTile(title: taskList[index]['title'], description: taskList[index]["description"], checked: taskList[index]["checked"], index: index);
+        });
+    case "Done":
+      return ListView.builder(
+        itemCount: taskList.length,
+        itemBuilder: (context, index) {
+          if (taskList[index]["checked"] == true) {
+                return TaskTile(title: taskList[index]['title'], description: taskList[index]["description"], checked: taskList[index]["checked"], index: index);
+          } else {
+            return Container();
+          }
+        });
+    case "Pending":
+      return ListView.builder(
+        itemCount: taskList.length,
+        itemBuilder: (context, index) {
+          if (taskList[index]["checked"] != true) {
+            return TaskTile(title: taskList[index]['title'], description: taskList[index]["description"], checked: taskList[index]["checked"], index: index);
+          } else {
+            return Container();
+          }
+        });    
+    default:
+      return Text("No option selected (in function)");
+  }
 }
 
-Future<Widget> taskListAndItems = createTaskList();
+Future<Widget> taskListAndItems = createTaskList("All");
