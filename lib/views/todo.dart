@@ -24,6 +24,9 @@ class TodoPageState extends State<TodoPage> {
     });
   }
 
+  String buttonText() {if ((_titleController.text.trim() == "") && (_descriptionController.text.trim() == "")) {dynamicButtonText.text = "Close"; return "Close";} else {dynamicButtonText.text = "Clear"; return "Clear";}}
+  final TextEditingController dynamicButtonText = TextEditingController();
+
   final _titleController = TextEditingController();
   final _titleFocusNode = FocusNode();
   final _descriptionController = TextEditingController();
@@ -99,6 +102,9 @@ class TodoPageState extends State<TodoPage> {
                         autofocus: true,
                         onSubmitted: (value) =>
                             _descriptionFocusNode.requestFocus(),
+                        onChanged: (value) {
+                          
+                        },
                       ),
 
                       TextField(
@@ -114,21 +120,25 @@ class TodoPageState extends State<TodoPage> {
                         spacing: 10,
                         children: [
                           Expanded(
-                            flex: 1,
+                            flex: 2,
                             child: OutlinedButton(
                               onPressed: () {
-                                _titleController.text = "";
-                                _descriptionController.text = "";
+                                if (dynamicButtonText.text == "Clear") {
+                                  _titleController.text = "";
+                                  _descriptionController.text = "";
+                                } else {
+                                  Navigator.pop(context);
+                                }
                               },
-                              child: Text("Clear"),
+                              child: Text(buttonText()),
                             ),
                           ),
 
                           Expanded(
-                            flex: 3,
+                            flex: 5,
                             child: FilledButton(
                               onPressed: () {
-                                if (_titleController.text != "") {
+                                if (_titleController.text.trim() != "") {
                                   createTaskInTaskList(
                                     _titleController.text,
                                     _descriptionController.text,
