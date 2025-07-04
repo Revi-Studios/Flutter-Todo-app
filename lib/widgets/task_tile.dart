@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/consts/task_list.dart';
 import 'package:flutter_todo_app/methods/task_related.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 // Task Tile
 class TaskTile extends StatefulWidget {
   final String title;
   final String description;
   final bool checked;
+  final VoidCallback updateMethod;
   final int index;
 
   const TaskTile({
@@ -13,6 +16,7 @@ class TaskTile extends StatefulWidget {
     required this.title,
     required this.description,
     required this.checked,
+    required this.updateMethod,
     required this.index,
   });
 
@@ -21,7 +25,6 @@ class TaskTile extends StatefulWidget {
 }
 
 class _TaskTileState extends State<TaskTile> {
-  
   late bool checked;
 
   @override
@@ -69,6 +72,15 @@ class _TaskTileState extends State<TaskTile> {
                 ? TextDecoration.lineThrough
                 : TextDecoration.none,
           ),
+        ),
+        trailing: IconButton(
+          onPressed: () {
+            setState(() {
+              taskList.remove(taskList[widget.index]);
+              widget.updateMethod();
+            });
+          },
+          icon: Icon(Symbols.delete, color: Colors.red,),
         ),
       ),
     );

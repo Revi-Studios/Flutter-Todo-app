@@ -20,7 +20,7 @@ class TodoPageState extends State<TodoPage> {
 
   void updateTaskList() {
     setState(() {
-      taskListAndItems = createTaskList(_taskFilteringChipsController.text);
+      taskListAndItems = createTaskList(_taskFilteringChipsController.text, updateTaskList);
     });
   }
 
@@ -175,25 +175,25 @@ class TodoPageState extends State<TodoPage> {
 
             Flexible(child: TaskFutureBuilder(taskList: taskListAndItems)),
 
-            Padding(
-              padding: const EdgeInsets.only(top: 40),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      clearListDataFromStorage(taskListStorageKey);
-                    },
-                    child: Text("Clear all"),
-                  ),
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 40),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       TextButton(
+            //         onPressed: () {
+            //           clearListDataFromStorage(taskListStorageKey);
+            //         },
+            //         child: Text("Clear all"),
+            //       ),
 
-                  IconButton(
-                    onPressed: () => updateTaskList(),
-                    icon: Icon(Symbols.refresh),
-                  ),
-                ],
-              ),
-            ),
+            //       IconButton(
+            //         onPressed: () => updateTaskList(),
+            //         icon: Icon(Symbols.refresh),
+            //       ),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),
@@ -201,4 +201,4 @@ class TodoPageState extends State<TodoPage> {
   }
 }
 
-Future<Widget> taskListAndItems = createTaskList("All");
+Future<Widget> taskListAndItems = createTaskList("All", () {},);
