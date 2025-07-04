@@ -29,11 +29,11 @@ class _TaskFilterChipState extends State<TaskFilteringChips> {
     return Row(
       spacing: 15,
       children: [
-        FilterChip(label: Text("All"), onSelected: (value) => setState(() {allSelection = value; widget.controller.text = "All"; widget.onChange(); doneSelection = false; pendingSelection = false;}), selected: allSelection, selectedColor: Theme.of(context).colorScheme.primary,),
+        FilterChip(label: Text("All"), onSelected: (value) => setState(() {if (!allSelection == true) {allSelection = value; widget.controller.text = "All"; widget.onChange();} doneSelection = false; pendingSelection = false;}), selected: allSelection, selectedColor: Theme.of(context).colorScheme.primary,),
     
-        FilterChip(label: Text("Done"), onSelected: (value) => setState(() {doneSelection = value; widget.controller.text = "Done"; widget.onChange(); allSelection = false; pendingSelection = false;}), selected: doneSelection, selectedColor: Theme.of(context).colorScheme.primary,),
+        FilterChip(label: Text("Done"), onSelected: (value) => setState(() {if (!doneSelection == true) {doneSelection = value; widget.controller.text = "Done"; widget.onChange();} allSelection = false; pendingSelection = false;}), selected: doneSelection, selectedColor: Theme.of(context).colorScheme.primary,),
     
-        FilterChip(label: Text("Pending"), onSelected: (value) => setState(() {pendingSelection = value; widget.controller.text = "Pending"; widget.onChange(); doneSelection = false; allSelection = false;}), selected: pendingSelection, selectedColor: Theme.of(context).colorScheme.primary,),
+        FilterChip(label: Text("Pending"), onSelected: (value) => setState(() {if (!pendingSelection == true) {pendingSelection = value; widget.controller.text = "Pending"; widget.onChange();} doneSelection = false; allSelection = false;}), selected: pendingSelection, selectedColor: Theme.of(context).colorScheme.primary,),
     
       ],
     );
