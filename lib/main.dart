@@ -39,9 +39,9 @@ class MyApp extends StatelessWidget {
         ),
       ),
       themeMode: ThemeMode.system,
-      routes: {
-        '/settings': (context) => SettingsPage(),
-      },
+      // routes: {
+      //   '/settings': (context) => SettingsPage(),
+      // },
       home: TodoPage(),
     );
   }

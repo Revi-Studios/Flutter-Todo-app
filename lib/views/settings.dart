@@ -1,95 +1,95 @@
-import 'package:flutter/material.dart';
-import 'package:material_symbols_icons/symbols.dart';
+// import 'package:flutter/material.dart';
+// import 'package:material_symbols_icons/symbols.dart';
 
-class SettingsPage extends StatelessWidget {
+// class SettingsPage extends StatelessWidget {
 
-  final ThemeData? themeData;
+//   final ThemeData? themeData;
   
-  const SettingsPage({super.key, this.themeData});
+//   const SettingsPage({super.key, this.themeData});
 
-  // Variables
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Settings'),
-        centerTitle: true,
-      ),
+//   // Variables
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Settings'),
+//         centerTitle: true,
+//       ),
 
-      body: ListView(
-        children: [
+//       body: ListView(
+//         children: [
 
-          SwitchSettingsPare(title: 'Dark Mode', subTitle: 'Turns on or off dark mode in the app', isToggled: true,),
+//           SwitchSettingsPare(title: 'Dark Mode', subTitle: 'Turns on or off dark mode in the app', isToggled: true,),
 
-          Divider(),
+//           Divider(),
 
-          SwitchSettingsPare(title: 'Send Notifications', subTitle: 'Sends or stops the sending of notifications',),
+//           SwitchSettingsPare(title: 'Send Notifications', subTitle: 'Sends or stops the sending of notifications',),
 
-          Divider(),
+//           Divider(),
 
 
 
-        ],
-      ),
-    );
-  }
-}
+//         ],
+//       ),
+//     );
+//   }
+// }
 
-class SwitchSettingsPare extends StatefulWidget {
+// class SwitchSettingsPare extends StatefulWidget {
 
-  final String title;
-  final String? subTitle;
-  bool? isToggled;
+//   final String title;
+//   final String? subTitle;
+//   bool? isToggled;
   
 
-  SwitchSettingsPare({super.key, required this.title, this.subTitle, this.isToggled, });
+//   SwitchSettingsPare({super.key, required this.title, this.subTitle, this.isToggled, });
 
-  @override
-  State<SwitchSettingsPare> createState() => _SwitchSettingsPareState();
-}
+//   @override
+//   State<SwitchSettingsPare> createState() => _SwitchSettingsPareState();
+// }
 
-class _SwitchSettingsPareState extends State<SwitchSettingsPare> {
+// class _SwitchSettingsPareState extends State<SwitchSettingsPare> {
 
-  ifNotNull({var value, String type = 'String'}) {
-    switch (type) {
-      case 'String':
-          if (value == null) {
-            return ('');
-          } else {
-            return value;
-          }
-      case 'bool':
-          if (value == null) {
-            return (false);
-          } else {
-            return value;
-          }
-    }
-  }
+//   ifNotNull({var value, String type = 'String'}) {
+//     switch (type) {
+//       case 'String':
+//           if (value == null) {
+//             return ('');
+//           } else {
+//             return value;
+//           }
+//       case 'bool':
+//           if (value == null) {
+//             return (false);
+//           } else {
+//             return value;
+//           }
+//     }
+//   }
 
 
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListTile(
 
-      leading: Switch(
+//       leading: Switch(
 
-        thumbIcon: WidgetStateProperty.fromMap(<WidgetStatesConstraint, Icon>{WidgetState.selected: Icon(Symbols.check), WidgetState.any: Icon(Symbols.close)}),
+//         thumbIcon: WidgetStateProperty.fromMap(<WidgetStatesConstraint, Icon>{WidgetState.selected: Icon(Symbols.check), WidgetState.any: Icon(Symbols.close)}),
 
-      value: ifNotNull(value: widget.isToggled, type: "bool"), 
+//       value: ifNotNull(value: widget.isToggled, type: "bool"), 
 
-      onChanged: (bool newValue) {
-        setState(() {
-          widget.isToggled = newValue;
-        });
-      }),
+//       onChanged: (bool newValue) {
+//         setState(() {
+//           widget.isToggled = newValue;
+//         });
+//       }),
 
-      title: Text(ifNotNull(value: widget.title)),
+//       title: Text(ifNotNull(value: widget.title)),
 
-      subtitle: Text(ifNotNull(value: widget.subTitle)),
+//       subtitle: Text(ifNotNull(value: widget.subTitle)),
       
 
 
-    );
-  }
-}
+//     );
+//   }
+// }

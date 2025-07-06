@@ -1,9 +1,7 @@
 // import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/consts/task_storage_key.dart';
 import 'package:flutter_todo_app/methods/create_task.dart';
-import 'package:flutter_todo_app/methods/saving_to_prefrences.dart';
 import 'package:flutter_todo_app/methods/task_related.dart';
 import 'package:flutter_todo_app/widgets/task_filter_chip.dart';
 import 'package:flutter_todo_app/widgets/task_future_builder.dart';
@@ -58,7 +56,7 @@ class TodoPageState extends State<TodoPage> {
               title: Text('Settings'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, '/settings');
+                // Navigator.pushNamed(context, '/settings');
               },
             ),
           ],
