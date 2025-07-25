@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/consts/prefrence_data.dart';
 import 'package:flutter_todo_app/methods/task_related.dart';
-import 'package:flutter_todo_app/views/settings.dart';
 import 'package:flutter_todo_app/views/todo.dart';
 
 void main() {
@@ -8,8 +8,21 @@ void main() {
   setTaskListFromStorage();
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+
+
+}
+
+class _MyAppState extends State<MyApp> {
+
+  void updateWidget() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +51,11 @@ class MyApp extends StatelessWidget {
           },
         ),
       ),
-      themeMode: ThemeMode.system,
+      themeMode: prefrenceData.theme,
       // routes: {
       //   '/settings': (context) => SettingsPage(),
       // },
-      home: TodoPage(),
+      home: TodoPage(appRebuildMethod: updateWidget,),
     );
   }
 }

@@ -3,12 +3,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/methods/create_task.dart';
 import 'package:flutter_todo_app/methods/task_related.dart';
+import 'package:flutter_todo_app/views/settings.dart';
 import 'package:flutter_todo_app/widgets/task_filter_chip.dart';
 import 'package:flutter_todo_app/widgets/task_future_builder.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 class TodoPage extends StatefulWidget {
-  const TodoPage({super.key});
+
+  final VoidCallback appRebuildMethod;
+
+  const TodoPage({super.key, required this.appRebuildMethod});
 
   @override
   State<TodoPage> createState() => TodoPageState();
@@ -56,7 +60,7 @@ class TodoPageState extends State<TodoPage> {
               title: Text('Settings'),
               onTap: () {
                 Navigator.pop(context);
-                // Navigator.pushNamed(context, '/settings');
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage(appRebuildMethod: widget.appRebuildMethod,),));
               },
             ),
           ],
