@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/consts/prefrence_data.dart';
+import 'package:flutter_todo_app/classes/prefrence_data.dart';
 import 'package:flutter_todo_app/widgets/switch_settings_pare.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -26,9 +26,9 @@ class SettingsPage extends StatelessWidget {
             isToggled: true,
             onChanged: (newValue) => {
               if (newValue == true)
-                {prefrenceData.theme = ThemeMode.dark, appRebuildMethod()}
+                {userPrefrenceData.theme = ThemeMode.dark, appRebuildMethod()}
               else /*if (newValue == false)*/
-                {prefrenceData.theme = ThemeMode.light, appRebuildMethod()},
+                {userPrefrenceData.theme = ThemeMode.light, appRebuildMethod()},
             },
           ),
 

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/consts/prefrence_data.dart';
-import 'package:flutter_todo_app/methods/task_related.dart';
+import 'package:flutter_todo_app/classes/prefrence_data.dart';
 import 'package:flutter_todo_app/views/todo.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await userPrefrenceData.init();
   runApp(const MyApp());
-  setTaskListFromStorage();
 }
 
 class MyApp extends StatefulWidget {
@@ -51,7 +51,7 @@ class _MyAppState extends State<MyApp> {
           },
         ),
       ),
-      themeMode: prefrenceData.theme,
+      themeMode: userPrefrenceData.theme,
       // routes: {
       //   '/settings': (context) => SettingsPage(),
       // },

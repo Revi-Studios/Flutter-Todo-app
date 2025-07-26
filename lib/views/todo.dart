@@ -1,15 +1,14 @@
 // import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/methods/create_task.dart';
-import 'package:flutter_todo_app/methods/task_related.dart';
+import 'package:flutter_todo_app/classes/prefrence_data.dart';
+import 'package:flutter_todo_app/classes/task_list_options_controller.dart';
 import 'package:flutter_todo_app/views/settings.dart';
 import 'package:flutter_todo_app/widgets/task_filter_chip.dart';
-import 'package:flutter_todo_app/widgets/task_future_builder.dart';
+import 'package:flutter_todo_app/widgets/task_list.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 class TodoPage extends StatefulWidget {
-
   final VoidCallback appRebuildMethod;
 
   const TodoPage({super.key, required this.appRebuildMethod});
@@ -19,26 +18,37 @@ class TodoPage extends StatefulWidget {
 }
 
 class TodoPageState extends State<TodoPage> {
-
-  void updateTaskList() {
-    setState(() {
-      taskListAndItems = createTaskList(_taskFilteringChipsController.text, updateTaskList);
-    });
+  @override
+  void initState() {
+    userPrefrenceData.init();
+    super.initState();
   }
 
-  String buttonText() {if ((_titleController.text.trim() == "") && (_descriptionController.text.trim() == "")) {dynamicButtonText.text = "Close"; return "Close";} else {dynamicButtonText.text = "Clear"; return "Clear";}}
+  void rebuildWidget() {
+    setState(() {});
+  }
+
+  String buttonText() {
+    if ((_titleController.text.trim() == "") &&
+        (_descriptionController.text.trim() == "")) {
+      dynamicButtonText.text = "Close";
+      return "Close";
+    } else {
+      dynamicButtonText.text = "Clear";
+      return "Clear";
+    }
+  }
+
   final TextEditingController dynamicButtonText = TextEditingController();
 
   final _titleController = TextEditingController();
   final _titleFocusNode = FocusNode();
   final _descriptionController = TextEditingController();
   final _descriptionFocusNode = FocusNode();
-
-  final _taskFilteringChipsController = TextEditingController();
+  final _taskFilteringChipsController = TaskListOptionsController();
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Todo"),
@@ -60,7 +70,13 @@ class TodoPageState extends State<TodoPage> {
               title: Text('Settings'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage(appRebuildMethod: widget.appRebuildMethod,),));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        SettingsPage(appRebuildMethod: widget.appRebuildMethod),
+                  ),
+                );
               },
             ),
           ],
@@ -75,7 +91,7 @@ class TodoPageState extends State<TodoPage> {
             showDragHandle: true,
             isScrollControlled: true,
 
-            // useSafeArea: false,
+            useSafeArea: true,
             context: context,
             builder: (context) {
               return Scaffold(
@@ -104,9 +120,7 @@ class TodoPageState extends State<TodoPage> {
                         autofocus: true,
                         onSubmitted: (value) =>
                             _descriptionFocusNode.requestFocus(),
-                        onChanged: (value) {
-                          
-                        },
+                        onChanged: (value) {},
                       ),
 
                       TextField(
@@ -141,12 +155,14 @@ class TodoPageState extends State<TodoPage> {
                             child: FilledButton(
                               onPressed: () {
                                 if (_titleController.text.trim() != "") {
-                                  createTaskInTaskList(
-                                    _titleController.text,
-                                    _descriptionController.text,
-                                  );
-                                  Navigator.pop(context);
-                                  saveTaskListToStorage();
+                                  if (!userPrefrenceData.taskList.containsKey(_titleController.text.trim())) {
+                                    Navigator.pop(context);
+                                    userPrefrenceData.taskList.addAll({_titleController.text.trim(): {"title": _titleController.text, "description": _descriptionController.text.trim(), "checked": false}});
+                                    userPrefrenceData.saveData();
+                                    rebuildWidget();
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("This task already exists!")));
+                                  }
                                 } else {
                                   _titleFocusNode.requestFocus();
                                 }
@@ -172,10 +188,31 @@ class TodoPageState extends State<TodoPage> {
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 10),
-              child: TaskFilteringChips(controller: _taskFilteringChipsController, onChanged: () => updateTaskList(),),
+              child: TaskFilteringChips(
+                controller: _taskFilteringChipsController,
+                onChanged: () => rebuildWidget(),
+              ),
             ),
 
-            Flexible(child: TaskFutureBuilder(taskList: taskListAndItems)),
+            Flexible(
+              child: TaskList(
+                taskList: userPrefrenceData.taskListasList,
+                options: _taskFilteringChipsController,
+              ),
+            ),
+
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 40),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       IconButton.filled(
+            //         onPressed: () => userPrefrenceData.saveData(),
+            //         icon: Icon(Symbols.refresh),
+            //       ),
+            //     ],
+            //   ),
+            // ),
 
             // Padding(
             //   padding: const EdgeInsets.only(top: 40),
@@ -202,5 +239,3 @@ class TodoPageState extends State<TodoPage> {
     );
   }
 }
-
-Future<Widget> taskListAndItems = createTaskList("All", () {},);

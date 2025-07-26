@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/consts/task_list.dart';
-import 'package:flutter_todo_app/methods/task_related.dart';
+import 'package:flutter_todo_app/classes/prefrence_data.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 // Task Tile
@@ -9,7 +8,6 @@ class TaskTile extends StatefulWidget {
   final String description;
   final bool checked;
   final VoidCallback updateMethod;
-  final int index;
 
   const TaskTile({
     super.key,
@@ -17,7 +15,6 @@ class TaskTile extends StatefulWidget {
     required this.description,
     required this.checked,
     required this.updateMethod,
-    required this.index,
   });
 
   @override
@@ -50,8 +47,10 @@ class _TaskTileState extends State<TaskTile> {
           value: checked,
           onChanged: (value) {
             setState(() {
-              checked = !checked;
-              switchCheckedState(widget.index, checked);
+              bool newCheckedValue = !checked;
+              checked = newCheckedValue;
+              userPrefrenceData.taskList[widget.title]["checked"] = newCheckedValue;
+              userPrefrenceData.saveData();
             });
           },
         ),
@@ -73,14 +72,16 @@ class _TaskTileState extends State<TaskTile> {
                 : TextDecoration.none,
           ),
         ),
+
         trailing: IconButton(
           onPressed: () {
             setState(() {
-              taskList.remove(taskList[widget.index]);
+              userPrefrenceData.taskList.remove(widget.title);
+              userPrefrenceData.saveData();
               widget.updateMethod();
             });
           },
-          icon: Icon(Symbols.delete, color: Colors.red,),
+          icon: Icon(Symbols.delete, color: Colors.red),
         ),
       ),
     );
