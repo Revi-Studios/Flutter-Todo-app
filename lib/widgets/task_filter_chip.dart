@@ -42,21 +42,6 @@ class _TaskFilterChipState extends State<TaskFilteringChips> {
         ),
 
         FilterChip(
-          label: Text("Done"),
-          onSelected: (value) => setState(() {
-            if (!doneSelection == true) {
-              doneSelection = value;
-              widget.controller.value = TaskListOptions.done;
-            }
-            widget.onChanged();
-            allSelection = false;
-            pendingSelection = false;
-          }),
-          selected: doneSelection,
-          selectedColor: Theme.of(context).colorScheme.primary,
-        ),
-
-        FilterChip(
           label: Text("Pending"),
           onSelected: (value) => setState(() {
             if (!pendingSelection == true) {
@@ -68,6 +53,21 @@ class _TaskFilterChipState extends State<TaskFilteringChips> {
             allSelection = false;
           }),
           selected: pendingSelection,
+          selectedColor: Theme.of(context).colorScheme.primary,
+        ),
+
+        FilterChip(
+          label: Text("Done"),
+          onSelected: (value) => setState(() {
+            if (!doneSelection == true) {
+              doneSelection = value;
+              widget.controller.value = TaskListOptions.done;
+            }
+            widget.onChanged();
+            allSelection = false;
+            pendingSelection = false;
+          }),
+          selected: doneSelection,
           selectedColor: Theme.of(context).colorScheme.primary,
         ),
       ],
