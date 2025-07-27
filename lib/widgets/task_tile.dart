@@ -49,7 +49,8 @@ class _TaskTileState extends State<TaskTile> {
             setState(() {
               bool newCheckedValue = !checked;
               checked = newCheckedValue;
-              userPrefrenceData.defaultTaskList[widget.title]["checked"] = newCheckedValue;
+              userPrefrenceData.defaultTaskList[widget.title]["checked"] =
+                  newCheckedValue;
               userPrefrenceData.saveData();
             });
           },

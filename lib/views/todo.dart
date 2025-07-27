@@ -18,7 +18,6 @@ class TodoPage extends StatefulWidget {
 }
 
 class TodoPageState extends State<TodoPage> {
-
   void rebuildWidget() {
     setState(() {});
   }
@@ -150,13 +149,30 @@ class TodoPageState extends State<TodoPage> {
                             child: FilledButton(
                               onPressed: () {
                                 if (_titleController.text.trim() != "") {
-                                  if (!userPrefrenceData.defaultTaskList.containsKey(_titleController.text.trim())) {
+                                  if (!userPrefrenceData.defaultTaskList
+                                      .containsKey(
+                                        _titleController.text.trim(),
+                                      )) {
                                     Navigator.pop(context);
-                                    userPrefrenceData.defaultTaskList.addAll({_titleController.text.trim(): {"title": _titleController.text, "description": _descriptionController.text.trim(), "checked": false}});
+                                    userPrefrenceData.defaultTaskList.addAll({
+                                      _titleController.text.trim(): {
+                                        "title": _titleController.text,
+                                        "description": _descriptionController
+                                            .text
+                                            .trim(),
+                                        "checked": false,
+                                      },
+                                    });
                                     userPrefrenceData.saveData();
                                     rebuildWidget();
                                   } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("This task already exists!")));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          "This task already exists!",
+                                        ),
+                                      ),
+                                    );
                                   }
                                 } else {
                                   _titleFocusNode.requestFocus();
@@ -193,6 +209,7 @@ class TodoPageState extends State<TodoPage> {
               child: TaskList(
                 taskList: userPrefrenceData.defaultTaskListasList,
                 options: _taskFilteringChipsController,
+                widgetRebuildMethod: rebuildWidget,
               ),
             ),
 

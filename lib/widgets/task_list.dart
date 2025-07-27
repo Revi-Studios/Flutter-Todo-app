@@ -7,11 +7,13 @@ enum TaskListOptions { all, done, pending }
 class TaskList extends StatefulWidget {
   final List taskList;
   final TaskListOptionsController options;
+  final Function widgetRebuildMethod;
 
   const TaskList({
     super.key,
     required this.taskList,
     required this.options,
+    required this.widgetRebuildMethod,
   });
 
   @override
@@ -19,9 +21,8 @@ class TaskList extends StatefulWidget {
 }
 
 class _TaskListState extends State<TaskList> {
-
   void rebuildWidget() {
-    setState(() {});
+    widget.widgetRebuildMethod();
   }
 
   @override
