@@ -6,33 +6,36 @@ PrefrenceData userPrefrenceData = PrefrenceData();
 
 class PrefrenceData {
 
-  final String taskListStorageKey = "taskListData";
-  ThemeMode theme = ThemeMode.system;
-  
-  // a map taskList with the title of the task as key for the hole task so we can delete the tasks with a key and not an index
-  Map<String, dynamic> taskList = {
-    // "Title": {"title": "Title", "description": "Description", "checked": true},
-    // "Title1": {"title": "Title1", "description": "Description", "checked": false},
-    // "Title2": {"title": "Title1", "description": "Description", "checked": false},
-    // "Title3": {"title": "Title1", "description": "Description", "checked": false}
+  final String userDataStorageKey = "userData";
+
+  Map userData = {
+    "settings": {"darkmode": true},
+    "task-lists" : {"default": {"Default": {"title": "Default", "description": "test", "checked": true}}}
   };
 
+  // theme
+  ThemeMode get theme {return userData["settings"]["darkmode"] ? ThemeMode.dark : ThemeMode.light;}
+
+  // a map taskList with the title of the task as key for the hole task so we can delete the tasks with a key and not an index
+  Map<String, dynamic> get defaultTaskList {return userData["task-lists"]["default"];}
+
   // turns the taskList map into a list so we can use it in a listview builder
-  List get taskListasList {return taskList.values.toList();}
+  List get defaultTaskListasList {return defaultTaskList.values.toList();}
+
 
   Future init() async {
     final prefs = await SharedPreferences.getInstance(); 
-    final String? taskListToString = prefs.getString(taskListStorageKey);
+    final String? taskListToString = prefs.getString("userData");
 
-    taskList = json.decode(taskListToString ?? "{}");
-    return taskList;
+    userData = json.decode(taskListToString ?? "{}");
+    return userData;
   }
 
 
   void saveData() async {
     final prefs = await SharedPreferences.getInstance();
-    String taskListToString  = json.encode(taskList);
+    String userDataAsString = json.encode(userData);
 
-    await prefs.setString(taskListStorageKey, taskListToString);
+    await prefs.setString(userDataStorageKey, userDataAsString);
   }
 }

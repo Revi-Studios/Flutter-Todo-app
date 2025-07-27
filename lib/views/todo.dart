@@ -18,11 +18,6 @@ class TodoPage extends StatefulWidget {
 }
 
 class TodoPageState extends State<TodoPage> {
-  @override
-  void initState() {
-    userPrefrenceData.init();
-    super.initState();
-  }
 
   void rebuildWidget() {
     setState(() {});
@@ -155,9 +150,9 @@ class TodoPageState extends State<TodoPage> {
                             child: FilledButton(
                               onPressed: () {
                                 if (_titleController.text.trim() != "") {
-                                  if (!userPrefrenceData.taskList.containsKey(_titleController.text.trim())) {
+                                  if (!userPrefrenceData.defaultTaskList.containsKey(_titleController.text.trim())) {
                                     Navigator.pop(context);
-                                    userPrefrenceData.taskList.addAll({_titleController.text.trim(): {"title": _titleController.text, "description": _descriptionController.text.trim(), "checked": false}});
+                                    userPrefrenceData.defaultTaskList.addAll({_titleController.text.trim(): {"title": _titleController.text, "description": _descriptionController.text.trim(), "checked": false}});
                                     userPrefrenceData.saveData();
                                     rebuildWidget();
                                   } else {
@@ -196,7 +191,7 @@ class TodoPageState extends State<TodoPage> {
 
             Flexible(
               child: TaskList(
-                taskList: userPrefrenceData.taskListasList,
+                taskList: userPrefrenceData.defaultTaskListasList,
                 options: _taskFilteringChipsController,
               ),
             ),

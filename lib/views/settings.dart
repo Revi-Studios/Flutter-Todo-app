@@ -23,13 +23,12 @@ class SettingsPage extends StatelessWidget {
           SwitchSettingsPare(
             title: 'Dark Mode',
             subTitle: 'Turns on or off dark mode in the app',
-            isToggled: true,
-            onChanged: (newValue) => {
-              if (newValue == true)
-                {userPrefrenceData.theme = ThemeMode.dark, appRebuildMethod()}
-              else /*if (newValue == false)*/
-                {userPrefrenceData.theme = ThemeMode.light, appRebuildMethod()},
-            },
+            isToggled: userPrefrenceData.userData["settings"]["darkmode"],
+            onChanged: (newValue) {
+              userPrefrenceData.userData["settings"]["darkmode"] = newValue;
+              userPrefrenceData.saveData();
+              appRebuildMethod();
+            }
           ),
 
           Divider(),
