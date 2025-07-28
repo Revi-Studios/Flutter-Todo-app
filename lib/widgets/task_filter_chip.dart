@@ -39,6 +39,8 @@ class _TaskFilterChipState extends State<TaskFilteringChips> {
           }),
           selected: allSelection,
           selectedColor: Theme.of(context).colorScheme.primary,
+          labelStyle: TextStyle(color: allSelection ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.primary),
+          checkmarkColor: Theme.of(context).colorScheme.onPrimary,
         ),
 
         FilterChip(
@@ -54,6 +56,8 @@ class _TaskFilterChipState extends State<TaskFilteringChips> {
           }),
           selected: pendingSelection,
           selectedColor: Theme.of(context).colorScheme.primary,
+          labelStyle: TextStyle(color: pendingSelection ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.primary),
+          checkmarkColor: Theme.of(context).colorScheme.onPrimary,
         ),
 
         FilterChip(
@@ -69,6 +73,8 @@ class _TaskFilterChipState extends State<TaskFilteringChips> {
           }),
           selected: doneSelection,
           selectedColor: Theme.of(context).colorScheme.primary,
+          labelStyle: TextStyle(color: doneSelection ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.primary),
+          checkmarkColor: Theme.of(context).colorScheme.onPrimary,
         ),
       ],
     );

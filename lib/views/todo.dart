@@ -34,6 +34,12 @@ class TodoPageState extends State<TodoPage> {
   }
 
   final TextEditingController dynamicButtonText = TextEditingController();
+  // String get dynamicButtonText {
+  //   return _titleController.text.trim() == "" &&
+  //           _descriptionController.text.trim() == ""
+  //       ? "Close"
+  //       : "Clear";
+  // }
 
   final _titleController = TextEditingController();
   final _titleFocusNode = FocusNode();
@@ -80,6 +86,7 @@ class TodoPageState extends State<TodoPage> {
       drawerEdgeDragWidth: 100,
 
       floatingActionButton: FloatingActionButton(
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
         onPressed: () {
           showModalBottomSheet(
             showDragHandle: true,
@@ -168,8 +175,19 @@ class TodoPageState extends State<TodoPage> {
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
+                                        backgroundColor: Theme.of(
+                                          context,
+                                        ).colorScheme.primary,
+                                        margin: EdgeInsets.all(10.0),
+                                        behavior: SnackBarBehavior.floating,
+                                        showCloseIcon: true,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            20,
+                                          ),
+                                        ),
                                         content: Text(
-                                          "This task already exists!",
+                                          "A task with this title already exists!",
                                         ),
                                       ),
                                     );

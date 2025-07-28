@@ -36,10 +36,10 @@ class _TaskTileState extends State<TaskTile> {
 
     return Card(
       color: colorSheme.secondary,
-
+      elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
-        side: BorderSide(),
+        side: BorderSide(color: colorSheme.onSecondaryContainer),
       ),
 
       child: ListTile(

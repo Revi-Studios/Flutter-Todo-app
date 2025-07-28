@@ -31,25 +31,33 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         colorScheme: ColorScheme.light(
           primary: Colors.black,
-          secondary: Colors.white70,
+          onPrimary: Colors.white,
+          onPrimaryContainer: Colors.white,
+          secondary: const Color.fromARGB(255, 255, 255, 255),
+          tertiary: const Color.fromARGB(255, 246, 246, 246),
+          onSecondaryContainer: const Color.fromARGB(158, 231, 231, 231)
+
         ),
-        pageTransitionsTheme: const PageTransitionsTheme(
-          builders: <TargetPlatform, PageTransitionsBuilder>{
-            TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
-          },
-        ),
+        // pageTransitionsTheme: const PageTransitionsTheme(
+        //   builders: <TargetPlatform, PageTransitionsBuilder>{
+        //     TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+        //   },
+        // ),
       ),
       darkTheme: ThemeData(
         colorScheme: ColorScheme.dark(
-          primary: Colors.white,
-          secondary: Colors.black,
+          primary: const Color.fromARGB(255, 239, 239, 239),
+          secondary: const Color.fromARGB(255, 10, 10, 10),
+          onSecondaryContainer: const Color.fromARGB(255, 31, 31, 31),
+          surface: Colors.black,
+          onPrimaryContainer: Colors.white,
           tertiary: const Color.fromARGB(156, 44, 44, 44),
         ),
-        pageTransitionsTheme: const PageTransitionsTheme(
-          builders: <TargetPlatform, PageTransitionsBuilder>{
-            TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
-          },
-        ),
+        // pageTransitionsTheme: const PageTransitionsTheme(
+        //   builders: <TargetPlatform, PageTransitionsBuilder>{
+        //     TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+        //   },
+        // ),
       ),
       themeMode: userPrefrenceData.theme,
       // routes: {
