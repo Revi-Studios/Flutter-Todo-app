@@ -22,24 +22,25 @@ class TodoPageState extends State<TodoPage> {
     setState(() {});
   }
 
-  String buttonText() {
-    if ((_titleController.text.trim() == "") &&
-        (_descriptionController.text.trim() == "")) {
-      dynamicButtonText.text = "Close";
-      return "Close";
-    } else {
-      dynamicButtonText.text = "Clear";
-      return "Clear";
-    }
-  }
-
-  final TextEditingController dynamicButtonText = TextEditingController();
-  // String get dynamicButtonText {
-  //   return _titleController.text.trim() == "" &&
-  //           _descriptionController.text.trim() == ""
-  //       ? "Close"
-  //       : "Clear";
+  // String buttonText() {
+  //   if ((_titleController.text.trim() == "") &&
+  //       (_descriptionController.text.trim() == "")) {
+  //     dynamicButtonText.text = "Close";
+  //     return "Close";
+  //   } else {
+  //     dynamicButtonText.text = "Clear";
+  //     return "Clear";
+  //   }
   // }
+
+  // final TextEditingController dynamicButtonText = TextEditingController();
+
+  String get dynamicButtonText {
+    return _titleController.text.trim() == "" &&
+            _descriptionController.text.trim() == ""
+        ? "Cancel"
+        : "Clear";
+  }
 
   final _titleController = TextEditingController();
   final _titleFocusNode = FocusNode();
@@ -121,7 +122,7 @@ class TodoPageState extends State<TodoPage> {
                         autofocus: true,
                         onSubmitted: (value) =>
                             _descriptionFocusNode.requestFocus(),
-                        onChanged: (value) {},
+                        onChanged: (value) => setState(() {}),
                       ),
 
                       TextField(
@@ -139,15 +140,8 @@ class TodoPageState extends State<TodoPage> {
                           Expanded(
                             flex: 2,
                             child: OutlinedButton(
-                              onPressed: () {
-                                if (dynamicButtonText.text == "Clear") {
-                                  _titleController.text = "";
-                                  _descriptionController.text = "";
-                                } else {
-                                  Navigator.pop(context);
-                                }
-                              },
-                              child: Text(buttonText()),
+                              onPressed: () => dynamicButtonText == "Clear" ? {_titleController.text = "", _descriptionController.text = ""} : Navigator.of(context).pop(),
+                              child: Text(dynamicButtonText),
                             ),
                           ),
 
@@ -187,7 +181,7 @@ class TodoPageState extends State<TodoPage> {
                                           ),
                                         ),
                                         content: Text(
-                                          "A task with this title already exists!",
+                                          "A task with the title: \"${_titleController.text}\" already exists!",
                                         ),
                                       ),
                                     );
@@ -206,7 +200,7 @@ class TodoPageState extends State<TodoPage> {
                                         borderRadius: BorderRadius.circular(20),
                                       ),
                                       content: Text(
-                                        "Enter a title for the task!",
+                                        "Enter a valid title for the task!",
                                       ),
                                     ),
                                   );
