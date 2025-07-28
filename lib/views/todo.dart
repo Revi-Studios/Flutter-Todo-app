@@ -194,6 +194,22 @@ class TodoPageState extends State<TodoPage> {
                                   }
                                 } else {
                                   _titleFocusNode.requestFocus();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      backgroundColor: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                      margin: EdgeInsets.all(10.0),
+                                      behavior: SnackBarBehavior.floating,
+                                      showCloseIcon: true,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      content: Text(
+                                        "Enter a title for the task!",
+                                      ),
+                                    ),
+                                  );
                                 }
                               },
                               child: Text("Create Task"),
