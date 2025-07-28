@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/classes/prefrence_data.dart';
 import 'package:flutter_todo_app/classes/task_list_options_controller.dart';
+import 'package:flutter_todo_app/views/about.dart';
 import 'package:flutter_todo_app/views/settings.dart';
 import 'package:flutter_todo_app/widgets/task_filter_chip.dart';
 import 'package:flutter_todo_app/widgets/task_list.dart';
@@ -80,6 +81,17 @@ class TodoPageState extends State<TodoPage> {
                 );
               },
             ),
+            ListTile(
+              leading: Icon(Symbols.info),
+              title: Text("About"),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AboutPage()),
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -140,7 +152,12 @@ class TodoPageState extends State<TodoPage> {
                           Expanded(
                             flex: 2,
                             child: OutlinedButton(
-                              onPressed: () => dynamicButtonText == "Clear" ? {_titleController.text = "", _descriptionController.text = ""} : Navigator.of(context).pop(),
+                              onPressed: () => dynamicButtonText == "Clear"
+                                  ? {
+                                      _titleController.text = "",
+                                      _descriptionController.text = "",
+                                    }
+                                  : Navigator.of(context).pop(),
                               child: Text(dynamicButtonText),
                             ),
                           ),
