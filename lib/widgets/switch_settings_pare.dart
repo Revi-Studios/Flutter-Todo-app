@@ -22,7 +22,6 @@ class SwitchSettingsPare extends StatefulWidget {
 }
 
 class _SwitchSettingsPareState extends State<SwitchSettingsPare> {
-
   late bool isToggled;
 
   @override
@@ -34,20 +33,31 @@ class _SwitchSettingsPareState extends State<SwitchSettingsPare> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Switch(
-        thumbIcon: WidgetStateProperty.fromMap(<WidgetStatesConstraint, Icon>{
-          WidgetState.selected: Icon(Symbols.check),
-          WidgetState.any: Icon(Symbols.close),
-        }),
+      leading: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Switch(
+            thumbIcon:
+                WidgetStateProperty.fromMap(<WidgetStatesConstraint, Icon>{
+                  WidgetState.selected: Icon(Symbols.check),
+                  WidgetState.any: Icon(Symbols.close),
+                }),
 
-        value: isToggled,
+            value: isToggled,
 
-        onChanged: (bool newValue) {
-          setState(() {
-            isToggled = newValue;
-            widget.onChanged(newValue);
-          });
-        },
+            onChanged: (bool newValue) {
+              setState(() {
+                isToggled = newValue;
+                widget.onChanged(newValue);
+              });
+            },
+          ),
+          VerticalDivider(
+            indent: 10,
+            endIndent: 10,
+            radius: BorderRadius.circular(5),
+          ),
+        ],
       ),
 
       title: Text(widget.title),
