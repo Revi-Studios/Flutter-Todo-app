@@ -7,7 +7,7 @@ PrefrenceData userPrefrenceData = PrefrenceData();
 class PrefrenceData {
   final String userDataStorageKey = "userData";
 
-  Map userData = {
+  final Map _defaultUserData = {
     "finished-introduktion": false,
     "settings": {"darkmode": false},
     "task-lists": {
@@ -16,6 +16,8 @@ class PrefrenceData {
       },
     },
   };
+
+  late Map userData;
 
   // theme
   ThemeMode get theme {
@@ -35,12 +37,14 @@ class PrefrenceData {
   Future init() async {
     final prefs = await SharedPreferences.getInstance();
     final String? taskListToString = prefs.getString("userData");
+    Map decodedUserData = await json.decode(taskListToString ?? "{}");
 
-    userData = json.decode(taskListToString ?? "{}");
-    return userData;
+    userData = decodedUserData.toString() == "{}"
+        ? _defaultUserData
+        : decodedUserData;
   }
 
-  void saveData() async {
+  Future saveData() async {
     final prefs = await SharedPreferences.getInstance();
     String userDataAsString = json.encode(userData);
 

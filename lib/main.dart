@@ -24,16 +24,6 @@ class _MyAppState extends State<MyApp> {
   IntroductionPageController introductionPageController =
       IntroductionPageController();
 
-  // Widget get introductionPage {
-  //   Theme.brightnessOf(context) == Brightness.dark
-  //       ? userPrefrenceData.userData["settings"]["darkmode"] = true
-  //       : userPrefrenceData.userData["settings"]["darkmode"] = false;
-  //   return IntroductionPage(
-  //     appRebuildMethod: updateWidget,
-  //     finishedFirstPage: finishedFirstPage,
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

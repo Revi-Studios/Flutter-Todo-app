@@ -11,7 +11,6 @@ import 'package:material_symbols_icons/symbols.dart';
 
 class TodoPage extends StatefulWidget {
   final VoidCallback appRebuildMethod;
-
   const TodoPage({super.key, required this.appRebuildMethod});
 
   @override
@@ -174,7 +173,7 @@ class TodoPageState extends State<TodoPage> {
                                     Navigator.pop(context);
                                     userPrefrenceData.defaultTaskList.addAll({
                                       _titleController.text.trim(): {
-                                        "title": _titleController.text,
+                                        "title": _titleController.text.trim(),
                                         "description": _descriptionController
                                             .text
                                             .trim(),

@@ -196,17 +196,22 @@ class SecondIntroductionPage extends StatelessWidget {
                     child: SizedBox(
                       height: 40,
                       child: FilledButton.icon(
-                        onPressed: () {
+                        onPressed: () async {
                           userPrefrenceData.userData["finished-introduktion"] =
                               true;
-                          userPrefrenceData.saveData();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  TodoPage(appRebuildMethod: appRebuildMethod),
-                            ),
-                          );
+                          await userPrefrenceData.saveData();
+                          await userPrefrenceData.init();
+                          if (context.mounted) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TodoPage(
+                                  appRebuildMethod: appRebuildMethod,
+                                ),
+                              ),
+                            );
+                            appRebuildMethod();
+                          }
                         },
                         label: Text("Finish", maxLines: 1),
                         icon: Icon(Symbols.check),
