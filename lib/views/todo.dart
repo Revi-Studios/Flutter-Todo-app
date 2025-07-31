@@ -3,8 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/classes/prefrence_data.dart';
 import 'package:flutter_todo_app/classes/task_list_options_controller.dart';
-import 'package:flutter_todo_app/views/about.dart';
-import 'package:flutter_todo_app/views/settings.dart';
+import 'package:flutter_todo_app/widgets/app_drawer.dart';
 import 'package:flutter_todo_app/widgets/task_filter_chip.dart';
 import 'package:flutter_todo_app/widgets/task_list.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -61,39 +60,7 @@ class TodoPageState extends State<TodoPage> {
         ),
       ),
 
-      drawer: Drawer(
-        child: Column(
-          children: [
-            DrawerHeader(child: Text('App drawer')),
-
-            ListTile(
-              leading: Icon(Symbols.settings),
-              title: Text('Settings'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        SettingsPage(appRebuildMethod: widget.appRebuildMethod),
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Symbols.info),
-              title: Text("About"),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AboutPage()),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: AppDrawer(widget: widget),
 
       drawerEdgeDragWidth: 100,
 
