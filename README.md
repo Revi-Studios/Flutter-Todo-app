@@ -1,7 +1,6 @@
 # Flutter-Todo-app
 This is a project built for the porpus of learning flutter. It is an an android todo app with tasks. With learning flutter I am also learnung the Dart programming langauge.
 
-
 ![](/assets/images/task_man.svg)
 
 
