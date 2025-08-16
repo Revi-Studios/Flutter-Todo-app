@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class SettingsPare extends StatelessWidget {
-  final Widget icon;
+  final Icon? icon;
   final Widget title;
   final Widget? subtitle;
   final VoidCallback? onPressed;
 
   const SettingsPare({
     super.key,
-    required this.icon,
+    this.icon,
     required this.title,
     this.subtitle,
     this.onPressed,
@@ -19,13 +19,14 @@ class SettingsPare extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Padding(
-        padding: const EdgeInsets.only(left: 10),
+        padding: const EdgeInsets.only(left: 15),
         child: ListTile(
           leading: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(padding: const EdgeInsets.all(10.0), child: icon),
               VerticalDivider(
+                thickness: 1.5,
                 indent: 10,
                 endIndent: 10,
                 radius: BorderRadius.circular(5),

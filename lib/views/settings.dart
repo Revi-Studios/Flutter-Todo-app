@@ -41,7 +41,11 @@ class SettingsPage extends StatelessWidget {
             },
           ),
 
-          // Divider(indent: 50, endIndent: 50),
+          // SettingsPare(
+          //   icon: Icon(Symbols.sort),
+          //   title: Text("Default Task Sorting"),
+          //   subtitle: Text("All", style: TextStyle(color: Colors.white70)),
+          // ),
           SectionHeader(child: Text("Advanced")),
 
           SettingsPare(
@@ -55,15 +59,6 @@ class SettingsPage extends StatelessWidget {
             },
           ),
 
-          // TextButton.icon(
-          // onPressed: () {
-          //   Clipboard.setData(
-          //     ClipboardData(text: json.encode(userPrefrenceData.userData)),
-          //   );
-          // },
-          //   label: Text("Copy App Data"),
-          //   icon: Icon(Symbols.content_copy),
-          // ),
           SettingsPare(
             icon: Icon(Symbols.upload),
             title: Text("Load App Data"),
@@ -107,47 +102,6 @@ class SettingsPage extends StatelessWidget {
             },
           ),
 
-          // TextButton.icon(
-          //   onPressed: () {
-          //     showDialog(
-          //       context: context,
-          //       builder: (context) => AlertDialog(
-          //         backgroundColor: Theme.of(
-          //           context,
-          //         ).colorScheme.tertiaryContainer,
-          //         title: Text("Load App Data"),
-          //         content: Column(
-          //           mainAxisSize: MainAxisSize.min,
-          //           children: [
-          //             Text(
-          //               "This feature is experimental.",
-          //               style: TextStyle(color: Colors.yellow),
-          //             ),
-          //             Text(
-          //               "If the data you paste is from a older or newer version of this app, the data could be structured in an non valid way causing errors.",
-          //             ),
-          //           ],
-          //         ),
-          //         actions: [
-          //           TextField(
-          //             onSubmitted: (value) async {
-          //               userPrefrenceData.userData = await json.decode(value);
-          //               await userPrefrenceData.saveData();
-          //               // appRebuildMethod();
-          //               SystemNavigator.pop();
-          //             },
-          //             decoration: InputDecoration(
-          //               border: OutlineInputBorder(),
-          //               labelText: 'App Data',
-          //             ),
-          //           ),
-          //         ],
-          //       ),
-          //     );
-          //   },
-          //   label: Text("Load App Data"),
-          //   icon: Icon(Symbols.upload),
-          // ),
           Padding(
             padding: const EdgeInsets.only(top: 20.0),
             child: TextButton.icon(
