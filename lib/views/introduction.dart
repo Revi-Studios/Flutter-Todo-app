@@ -8,7 +8,7 @@ import 'package:flutter_todo_app/classes/prefrence_data.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
-// An controller controlling if the user has passed the firs intro page so the app know if you have selected a theme and no longer use the system theme
+/// A controller, controlling if the user has passed the first introduktion page so the app know if you have selected a theme and no longer use the system theme
 class IntroductionPageController {
   bool finishedFirstPage = false;
 }

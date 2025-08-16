@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_todo_app/classes/prefrence_data.dart';
+import 'package:flutter_todo_app/widgets/settings_pare.dart';
 import 'package:flutter_todo_app/widgets/switch_settings_pare.dart';
+import 'package:flutter_todo_app/widgets/section_header.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -23,8 +25,8 @@ class SettingsPage extends StatelessWidget {
 
       body: ListView(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 20),
+          SectionHeader(
+            padding: const EdgeInsets.only(left: 20, bottom: 10),
             child: Text("General"),
           ),
 
@@ -40,21 +42,32 @@ class SettingsPage extends StatelessWidget {
           ),
 
           // Divider(indent: 50, endIndent: 50),
-          Padding(
-            padding: const EdgeInsets.only(top: 50, left: 20),
-            child: Text("Advanced"),
-          ),
+          SectionHeader(child: Text("Advanced")),
 
-          TextButton.icon(
+          SettingsPare(
+            icon: Icon(Symbols.content_copy),
+            title: Text("Copy App Data"),
+            subtitle: Text("Copies your data to your clipboard"),
             onPressed: () {
               Clipboard.setData(
                 ClipboardData(text: json.encode(userPrefrenceData.userData)),
               );
             },
-            label: Text("Copy App Data"),
-            icon: Icon(Symbols.content_copy),
           ),
-          TextButton.icon(
+
+          // TextButton.icon(
+          // onPressed: () {
+          //   Clipboard.setData(
+          //     ClipboardData(text: json.encode(userPrefrenceData.userData)),
+          //   );
+          // },
+          //   label: Text("Copy App Data"),
+          //   icon: Icon(Symbols.content_copy),
+          // ),
+          SettingsPare(
+            icon: Icon(Symbols.upload),
+            title: Text("Load App Data"),
+            subtitle: Text("Loads data into the app"),
             onPressed: () {
               showDialog(
                 context: context,
@@ -92,10 +105,49 @@ class SettingsPage extends StatelessWidget {
                 ),
               );
             },
-            label: Text("Load App Data"),
-            icon: Icon(Symbols.upload),
           ),
 
+          // TextButton.icon(
+          //   onPressed: () {
+          //     showDialog(
+          //       context: context,
+          //       builder: (context) => AlertDialog(
+          //         backgroundColor: Theme.of(
+          //           context,
+          //         ).colorScheme.tertiaryContainer,
+          //         title: Text("Load App Data"),
+          //         content: Column(
+          //           mainAxisSize: MainAxisSize.min,
+          //           children: [
+          //             Text(
+          //               "This feature is experimental.",
+          //               style: TextStyle(color: Colors.yellow),
+          //             ),
+          //             Text(
+          //               "If the data you paste is from a older or newer version of this app, the data could be structured in an non valid way causing errors.",
+          //             ),
+          //           ],
+          //         ),
+          //         actions: [
+          //           TextField(
+          //             onSubmitted: (value) async {
+          //               userPrefrenceData.userData = await json.decode(value);
+          //               await userPrefrenceData.saveData();
+          //               // appRebuildMethod();
+          //               SystemNavigator.pop();
+          //             },
+          //             decoration: InputDecoration(
+          //               border: OutlineInputBorder(),
+          //               labelText: 'App Data',
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+          //     );
+          //   },
+          //   label: Text("Load App Data"),
+          //   icon: Icon(Symbols.upload),
+          // ),
           Padding(
             padding: const EdgeInsets.only(top: 20.0),
             child: TextButton.icon(
