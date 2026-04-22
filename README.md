@@ -1,5 +1,5 @@
-# Flutter-Todo-app
-This is a project built for the porpus of learning flutter. It is an an android todo app with tasks. By learning flutter I am also learning the Dart programming langauge.
+# Todo-App in *Flutter*
+This is a project built for the purpos of learning flutter. It is a simple android todo app. By learning flutter I am also learning the Dart programming langauge.
 
 ## Content:
  1. [**How do I get the app?**](#how-do-i-get-the-app)
@@ -9,8 +9,8 @@ This is a project built for the porpus of learning flutter. It is an an android 
 <img src="assets/images/task_man.svg" width="500">
 
 ## How do I get the app?
-
-- Download **latest released** version from [releases](https://github.com/Revi-Studios/Flutter-Todo-app/releases/tag/1.0).
+Options:
+- Download the **latest released** version from [releases](https://github.com/Revi-Studios/Flutter-Todo-app/releases/tag/1.0).
 
 - Clone the latest repository and build it your self. Se [Building Guide](#building-the-app-your-self) for help
 
@@ -22,7 +22,7 @@ To download and be able to build the application, make sure you have these thing
 - Github CLI
 ```
 
-Once you have those installed and setup follow these intructions:
+Once you have those installed and set up, follow these intructions:
 1. Clone the repository using you terminal:
 ```
 $ git clone https://github.com/Revi-Studios/Flutter-Todo-app.git
