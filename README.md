@@ -1,5 +1,5 @@
-# Todo-App in *Flutter*
-This is a project built for the purpos of learning flutter. It is a simple android todo app. By learning flutter I am also learning the Dart programming langauge.
+# Todo App written in *Flutter*
+This project was built as a learn-by-doing project for learning flutter. It is a simple android todo app. Learning flutter also meant learning the [Dart Programming Language](https://dart.dev/).
 
 ## Content:
  1. [**How do I get the app?**](#how-do-i-get-the-app)
@@ -12,7 +12,7 @@ This is a project built for the purpos of learning flutter. It is a simple andro
 Options:
 - Download the **latest released** version from [releases](https://github.com/Revi-Studios/Flutter-Todo-app/releases/tag/1.0).
 
-- Clone the latest repository and build it your self. Se [Building Guide](#building-the-app-your-self) for help
+- Clone the latest repository and build it yourself. Se [Building Guide](#how-do-i-build-the-application-myself) for help
 
 
 ## How do I build the application myself?
